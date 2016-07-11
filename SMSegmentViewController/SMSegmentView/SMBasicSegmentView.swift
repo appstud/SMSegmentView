@@ -16,7 +16,7 @@ public enum SegmentOrganiseMode: Int {
 
 
 public protocol SMSegmentViewDelegate: class {
-    func segmentView(segmentView: SMBasicSegmentView, didSelectSegmentAtIndex index: Int)
+    func segmentView(segmentView: SMBasicSegmentView, didSelectSegmentAtIndex index: Int, previousIndex: Int)
 }
 
 public class SMBasicSegmentView: UIView {
@@ -151,9 +151,11 @@ public class SMBasicSegmentView: UIView {
     // MARK: Actions
     public func selectSegmentAtIndex(index: Int) {
         
+        let previousIndex = self.indexOfSelectedSegment
+        
         if index == NSNotFound {
             self.deselectSegment()
-            self.delegate?.segmentView(self, didSelectSegmentAtIndex: index)
+            self.delegate?.segmentView(self, didSelectSegmentAtIndex: index, previousIndex: previousIndex)
         }else{
             assert(index >= 0 && index < self.segments.count, "Index at \(index) is out of bounds")
             
@@ -164,7 +166,7 @@ public class SMBasicSegmentView: UIView {
             self.indexOfSelectedSegment = index
             let segment = self.segments[index]
             segment.setSelected(true, inView: self)
-            self.delegate?.segmentView(self, didSelectSegmentAtIndex: index)
+            self.delegate?.segmentView(self, didSelectSegmentAtIndex: index, previousIndex: previousIndex)
         }
         
     }

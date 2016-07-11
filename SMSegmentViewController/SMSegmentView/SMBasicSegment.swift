@@ -34,10 +34,11 @@ public class SMBasicSegment : UIView {
     
     override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesEnded(touches, withEvent: event)
-        if self.isSelected == false{
-            self.segmentView?.selectSegmentAtIndex(self.index)
-        }else{
-            self.segmentView?.removeAllSelectionsIfAllowed()
-        }
+        self.segmentView?.selectSegmentAtIndex(self.index)
+        //        if self.isSelected == false{
+//            self.segmentView?.selectSegmentAtIndex(self.index)
+//        }else{
+//            self.segmentView?.removeAllSelectionsIfAllowed()
+//        }
     }
 }

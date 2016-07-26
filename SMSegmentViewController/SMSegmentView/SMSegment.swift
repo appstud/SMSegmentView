@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BadgeSwift
 
 public class SMSegment: SMBasicSegment {
     
@@ -116,6 +117,7 @@ public class SMSegment: SMBasicSegment {
     
    
     private var imageView: UIImageView = UIImageView()
+    private var badge: BadgeSwift = BadgeSwift()
     private var label: UILabel = UILabel()
     private var labelWidth: CGFloat = 0.0
     

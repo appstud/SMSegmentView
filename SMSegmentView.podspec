@@ -24,7 +24,6 @@ Pod::Spec.new do |s|
   s.source_files  = "SMSegmentViewController/SMSegmentView/*.swift"
   s.requires_arc = true
   s.frameworks = 'UIKit'
-
   s.dependency 'BadgeSwift'
 
 end

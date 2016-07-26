@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import BadgeSwift
 
 public class SMSegment: SMBasicSegment {
     
@@ -115,9 +114,45 @@ public class SMSegment: SMBasicSegment {
         }
     }
     
-   
+    public var badgeTextColor: UIColor = .blackColor() {
+        didSet {
+            self.badge.textColor = self.badgeTextColor
+        }
+    }
+    
+    public var badgeColor: UIColor = .redColor() {
+        didSet {
+            self.badge.badgeColor = self.badgeColor
+        }
+    }
+    
+    ///If setting this text not empty nor nil, it will automatically re-enable badge (hidden = false)
+    public var badgeText: String? = "" {
+        didSet {
+            
+            guard let text = badgeText else {
+                self.badgeEnabled = false
+                return
+            }
+            
+            if text.isEmpty {
+                self.badgeEnabled = false
+                return
+            }
+            self.badgeEnabled = true
+            self.badge.text = badgeText
+            self.layoutIfNeeded()
+        }
+    }
+    
+    public var badgeEnabled: Bool = false {
+        didSet {
+            self.badge.hidden = !badgeEnabled
+        }
+    }
+    
     private var imageView: UIImageView = UIImageView()
-    private var badge: BadgeSwift = BadgeSwift()
+    private var badge = SwiftBadge()
     private var label: UILabel = UILabel()
     private var labelWidth: CGFloat = 0.0
     
@@ -146,11 +181,38 @@ public class SMSegment: SMBasicSegment {
         
         self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.addSubview(self.imageView)
+        self.configureBadge()
+        self.positionBadgeToImage()
         
         self.label.textAlignment = NSTextAlignment.Center
         self.label.font = self.titleFont
         self.label.textColor = self.offSelectionTextColour
         self.addSubview(self.label)
+    }
+    
+    private func configureBadge() {
+        badge.text = "3"
+        badge.insets = CGSize(width: 5, height: 5)
+        badge.textColor = UIColor.blackColor()
+        badge.font = UIFont.systemFontOfSize(12)
+        badge.badgeColor = UIColor.redColor()
+//        badge.shadowOpacityBadge = 0.5
+//        badge.shadowOffsetBadge = CGSize(width: 0, height: 0)
+//        badge.shadowRadiusBadge = 1.0
+//        badge.shadowColorBadge = UIColor.blackColor()
+    }
+    
+    private func positionBadgeToImage() {
+        imageView.addSubview(badge)
+        badge.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint]()
+        
+        constraints.append(NSLayoutConstraint(item: badge, attribute: .Left, relatedBy: .Equal, toItem: imageView, attribute: .Right, multiplier: 1.0, constant: 3))
+        constraints.append(NSLayoutConstraint(item: badge, attribute: .CenterY, relatedBy: .Equal, toItem: imageView, attribute: .Top, multiplier: 1.0, constant: 0))
+        constraints.append(NSLayoutConstraint(item: badge, attribute: .Height, relatedBy: .Equal, toItem: imageView, attribute: .Height, multiplier: 0.8, constant: 0))
+        //constraints.append(NSLayoutConstraint(item: badge, attribute: .Height, relatedBy: .GreaterThanOrEqual, toItem: badge, attribute: .Width, multiplier: 1, constant: 0))
+        
+        self.addConstraints(constraints)
     }
     
     

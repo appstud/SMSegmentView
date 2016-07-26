@@ -25,10 +25,6 @@ let keySegmentOffSelectionTextColour = "OffSelectionTextColour"
 // The font of the text in the segment
 let keySegmentTitleFont = "TitleFont"
 
-
-
-
-@IBDesignable
 public class SMSegmentView: SMBasicSegmentView {
     
     @IBInspectable public var segmentVerticalMargin: CGFloat = 5.0 {
@@ -75,6 +71,22 @@ public class SMSegmentView: SMBasicSegmentView {
         didSet {
             for segment in self.segments as! [SMSegment] {
                 segment.titleFont = self.segmentTitleFont
+            }
+        }
+    }
+    
+    public var segmentBadgeTextColor: UIColor = UIColor.blackColor() {
+        didSet {
+            for segment in self.segments as! [SMSegment] {
+                segment.badgeTextColor = self.segmentBadgeTextColor
+            }
+        }
+    }
+    
+    public var segmentBadgeColor: UIColor = UIColor.blackColor() {
+        didSet {
+            for segment in self.segments as! [SMSegment] {
+                segment.badgeColor = self.segmentBadgeColor
             }
         }
     }
@@ -141,17 +153,32 @@ public class SMSegmentView: SMBasicSegmentView {
         self.layer.masksToBounds = true
     }
     
-    public func addSegmentWithTitle(title: String?, onSelectionImage: UIImage?, offSelectionImage: UIImage?) -> SMSegment {
+    public func addSegmentWithTitle(title: String?, onSelectionImage: UIImage?, offSelectionImage: UIImage?, badgeText: String) -> SMSegment {
         
         let segment = SMSegment(verticalMargin: self.segmentVerticalMargin, onSelectionColour: self.segmentOnSelectionColour, offSelectionColour: self.segmentOffSelectionColour, onSelectionTextColour: self.segmentOnSelectionTextColour, offSelectionTextColour: self.segmentOffSelectionTextColour, titleFont: self.segmentTitleFont)
         
         segment.title = title
         segment.onSelectionImage = onSelectionImage
         segment.offSelectionImage = offSelectionImage
-        
+        segment.badgeColor = segmentBadgeColor
+        segment.badgeTextColor = segmentBadgeTextColor
+        segment.badgeText = badgeText
         super.addSegment(segment)
         
         return segment
+    }
+    
+    ///If badge is empty string, will not show badge
+    public func badgeText(text: String?, forSegmentIndex: Int) {
+        if let segment = self.segments[forSegmentIndex] as? SMSegment {
+            segment.badgeText = text
+        }
+    }
+    
+    public func enableBadge(enable: Bool, forSegmentIndex: Int) {
+        if let segment = self.segments[forSegmentIndex] as? SMSegment {
+            segment.badgeEnabled = enable
+        }
     }
     
 }
